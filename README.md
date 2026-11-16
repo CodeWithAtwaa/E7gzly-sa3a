@@ -30,7 +30,7 @@ The primary goal of **E7gzly-Sa3a** is to make football pitch reservations faste
 * **Backend:** Laravel (PHP Framework)
 * **Frontend:** HTML5, CSS3, JavaScript (Blade Templates)
 * **Database:** MySQL / MariaDB
-* **Authentication:** Laravel Breeze / Fortify (Role-based access control)
+* **Authentication:** Laravel Breeze  (Role-based access control)
 
 ---
 
