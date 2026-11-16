@@ -1,5 +1,10 @@
 # ⚽ E7gzly-Sa3a – Football Club Booking System
 
+<p align="center">
+  <img src="img.jpg" alt="E7gzly-Sa3a Banner" width="800" style="border-radius: 12px;">
+</p>
+
+
 **E7gzly-Sa3a** ("Book Me an Hour") is a modern web application designed to streamline the process of reserving football pitches. Instead of calling the club or visiting in person, players and team captains can browse available pitches, check real-time schedules, and book their preferred time slots online.
 
 ---
