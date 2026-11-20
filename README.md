@@ -23,10 +23,11 @@
 
 ## 💡 Project Idea
 
-The primary goal of **E7gzly-Sa3a** is to make football pitch reservations faster, easier, and more organized for both players and club management. The platform connects two main user roles:
+The primary goal of **E7gzly-Sa3a** is to make football pitch reservations faster and easier while keeping every field owner’s workspace private. One Owner account is associated with one field. A shared application can serve multiple owners, but every booking, block, and schedule is scoped to its owner. The platform is a multi-tenant booking service. Each Owner is provisioned by the platform Super Admin and manages exactly one field. Players access a field-specific booking page. Owners cannot browse or access other owners’ fields, schedules, players, or bookings. The platform connects three roles:
 
 * **Customers (Players):** Browse pitches, view pricing and capacity, check real-time slot availability, and manage their reservations.
-* **Administrators (Club Staff):** Oversee club operations by managing pitches, setting working hours, approving/rejecting requests, and tracking booking analytics.
+* **Field Owners:** Manage their own field schedule, approve/reject booking requests, and manage players for that field only.
+* **Super Admin:** Creates, activates, and manages Owner accounts.
 
 ---
 
@@ -51,10 +52,9 @@ The primary goal of **E7gzly-Sa3a** is to make football pitch reservations faste
 * **Self-Service Cancellation:** Cancel upcoming reservations if they fall within the club's allowed cancellation window.
 * **Live Status Tracking:** Monitor booking progress (`Pending`, `Confirmed`, `Cancelled`, `Completed`).
 
-### 2. Admin Dashboard
+### 2. Field Owner Dashboard
 * **Secure Admin Access:** Dedicated login portal for club administrators.
 * **Analytics Overview:** At-a-glance dashboard displaying key metrics (total bookings, registered customers, active pitches, and revenue).
-* **Pitch Management (CRUD):** Add new pitches, update pricing/details, upload images, or deactivate pitches for maintenance.
 * **Schedule & Working Hours:** Configure club operating hours and block out unavailable dates or times.
 * **Reservation Control:** View all incoming customer bookings with filtering options by date or status.
 * **Approval Workflow:** Confirm or reject `Pending` booking requests.
@@ -74,16 +74,6 @@ Every reservation goes through a clear lifecycle:
 | 🔴 **Cancelled** | The booking was cancelled by the customer (within policy) or rejected by the admin. |
 | 🔵 **Completed** | The match date and time have passed, and the reservation is archived. |
 
----
-
-## 🗄 Suggested Database Schema
-
-To implement this in Laravel, you will primarily need the following tables:
-
-1. **`users`**: `id`, `name`, `email`, `phone`, `password`, `role` (`customer` | `admin`)
-2. **`pitches`**: `id`, `name`, `description`, `capacity`, `price_per_hour`, `image_path`, `is_active`
-3. **`bookings`**: `id`, `user_id`, `pitch_id`, `booking_date`, `start_time`, `end_time`, `total_price`, `status`
-4. **`working_hours`** *(Optional)*: `id`, `day_of_week`, `open_time`, `close_time`, `is_closed`
 
 ---
 
@@ -119,3 +109,14 @@ Follow these steps to run the project locally:
    php artisan serve
    ```
    Visit `http://127.0.0.1:8000` in your browser.
+
+
+## Tenant Isolation (Frontend Demo)
+
+- Each Owner account is linked to exactly one field (`tenantId`).
+- The Owner dashboard, schedule, pending requests, confirmed bookings, and blocked-player list are filtered to that field.
+- Public player sign-up creates Player accounts only. Owner accounts are provisioned by the platform Super Admin.
+- A player booking page is field-specific, for example `/?field=green-arena` or `/?field=champions`. The sign-in/sign-up flow carries the selected field context.
+- Demo Owner accounts: `owner@e7gezly.demo` (Green Arena), `champions@e7gezly.demo` (Champions Park), `yard@e7gezly.demo` (The Yard), and `stadiumx@e7gezly.demo` (Stadium X). Use the Demo Owner button or select Owner and use one of these email addresses.
+
+**Production security note:** this is a static frontend demo. Filtering in JavaScript is for demonstrating the UX only. The Laravel API must derive the authenticated Owner's `owner_id` on the server and scope every booking, schedule, and block query by it. Never trust a client-supplied `owner_id` or `tenantId`.

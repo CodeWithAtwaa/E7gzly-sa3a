@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07130D">
+  <title>Sign In | E7gezly</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            turf: {
+              950: '#07130D', 900: '#0B1F16', 800: '#112A1E', 700: '#173A29',
+              600: '#15803D', 500: '#16A34A', 400: '#22C55E', 300: '#86EFAC', 100: '#DCFCE7'
+            }
+          },
+          fontFamily: { display: ['Outfit', 'sans-serif'], sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../main.js" defer></script>
+</head>
+<body>
+  <a href="../index.html" class="fixed top-4 left-4 z-20 btn-ghost rounded-xl px-4 py-2 text-sm font-semibold">← Back to Home</a>
+  <main>
+<section id="loginView" class="view auth-screen px-4 py-10 md:py-14 flex items-center justify-center">
+    <div class="absolute top-10 left-[8%] text-green-100/10 text-5xl hidden md:block">⚽</div>
+    <div class="absolute bottom-12 right-[10%] text-green-100/10 text-6xl hidden md:block">✦</div>
+    <div class="auth-card rounded-[28px] p-7 md:p-9 relative z-10">
+        <div class="text-center">
+            <div class="auth-mark w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl">⚽</div>
+            <div class="font-display text-2xl font-black tracking-tight mt-3">E7gezly<span
+                    class="text-green-300">.</span>
+            </div>
+            <div class="text-[9px] tracking-[.28em] uppercase text-green-100/40 mt-1">Your game starts here</div>
+            <h1 class="font-display text-3xl md:text-4xl font-bold mt-6">Welcome Back <span class="text-green-300">to
+                    the
+                    Pitch.</span></h1>
+            <p class="text-xs text-green-100/50 mt-2">Sign in and get your squad back in action.</p>
+        </div>
+        <div class="mt-7">
+            <label class="auth-label text-center">CHOOSE YOUR ACCOUNT TYPE</label>
+            <div class="role-switch">
+                <button type="button" id="loginPlayerRole" class="role-option active"
+                    onclick="setAuthRole('login','player')">⚽ I'm a Player</button>
+                <button type="button" id="loginOwnerRole" class="role-option" onclick="setAuthRole('login','owner')">🏟
+                    I'm
+                    a Pitch Owner</button>
+            </div>
+        </div>
+        <form id="loginForm" class="mt-6 space-y-4">
+            <div><label class="auth-label" for="loginEmail">EMAIL ADDRESS</label><input id="loginEmail" name="email"
+                    class="auth-input" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+            <div><label class="auth-label" for="loginPhone">PHONE NUMBER</label><input id="loginPhone" name="phone"
+                    class="auth-input" type="tel" autocomplete="tel" inputmode="tel" placeholder="+20 1XX XXX XXXX"
+                    pattern="(\+20|0)?1[0125][0-9]{8}" title="Enter a valid Egyptian mobile number" required></div>
+            <div class="auth-field"><label class="auth-label" for="loginPassword">PASSWORD</label><input
+                    id="loginPassword" name="password" autocomplete="current-password" class="auth-input pr-16"
+                    type="password" placeholder="Enter your password" required minlength="4"><button type="button"
+                    class="eye-toggle" onclick="togglePassword('loginPassword',this)">Show</button></div>
+            <div class="flex items-center justify-between gap-3 text-xs">
+                <label class="flex items-center gap-2 text-green-100/60 cursor-pointer"><input id="rememberMe"
+                        type="checkbox" class="accent-green-500"> Remember Me</label>
+                <button type="button" onclick="openResetModal()" class="text-green-300 hover:text-green-100">Forgot
+                    Password?</button>
+            </div>
+            <button type="submit" class="btn-primary w-full rounded-xl py-3.5 font-bold text-sm">Sign In <span
+                    class="ml-1">→</span></button>
+        </form>
+        <div class="auth-divider mt-5">QUICK DEMO ACCESS</div>
+        <div class="grid grid-cols-2 gap-3 mt-4">
+            <button onclick="demoLogin('player')" class="btn-ghost rounded-xl py-3 text-xs font-semibold">⚽ Demo Player
+                Login</button>
+            <button onclick="demoLogin('owner')" class="btn-ghost rounded-xl py-3 text-xs font-semibold">🏟 Demo Owner
+                Login</button>
+        </div>
+        <p class="text-center text-xs text-green-100/55 mt-7">New to E7gezly? <a href="./signup.html?field=green-arena" class="text-green-300 font-bold hover:text-green-100">Create an Account</a></p>
+    </div>
+
+</section>
+
+<div id="resetModal" class="hidden fixed inset-0 z-[70] modal-backdrop p-4 flex items-center justify-center">
+  <div class="modal-panel glass rounded-3xl w-full max-w-md p-6 md:p-8 relative">
+    <button type="button" onclick="closeResetModal()" class="absolute top-4 right-4 text-green-100/50 text-2xl" aria-label="Close">×</button>
+    <div class="text-xs uppercase tracking-[.2em] text-green-300 font-bold">Account recovery</div>
+    <h2 class="font-display text-3xl font-bold mt-2">Reset your <span class="text-green-300">password.</span></h2>
+    <p class="text-xs text-green-100/55 mt-2 leading-6">Enter the email or mobile number linked to your account. We'll show a demo confirmation here.</p>
+    <form id="resetForm" class="mt-5 space-y-4">
+      <input id="resetIdentity" class="auth-input" placeholder="Email or mobile number" required>
+      <button class="btn-primary rounded-xl w-full py-3 font-bold text-sm" type="submit">Send Reset Link</button>
+    </form>
+  </div>
+</div>
+
+  </main>
+  <div id="toastHost" class="fixed bottom-5 right-5 z-[80] space-y-2"></div>
+</body>
+</html>
